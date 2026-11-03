@@ -12,7 +12,9 @@ public int Id { get; set; }
         public string CompanyAddress { get; set; } = string.Empty;
         public int PhoneNumber { get; set; }
         public decimal Purchase {get; set; }
+        public decimal LastDiv { get; set; }
         public decimal Divident {get; set; }
         public string Industry {get; set;} = string.Empty;
         public long MarketCap {get; set;}
+        //comments
 }

@@ -2,6 +2,7 @@ using api.Data;
 using api.Mappers; // <--- Add this using directive!
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using api.Dtos.Stock;
 
 namespace api.Controllers
 {
@@ -17,9 +18,10 @@ namespace api.Controllers
         }
 
         [HttpGet]
+[HttpGet]
         public IActionResult GetAll()
         {
-            var stocks = _context.Stocks.ToStockDtoList();
+            var stocks = _context.Stocks.Select(s => s.ToStockDto()).ToList();
             return Ok(stocks);
         }
 
@@ -32,6 +34,14 @@ namespace api.Controllers
                 return NotFound();
             }
             return Ok(stock.ToStockDto());
+        }
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateStockRequestDto stockDto)
+        {
+             var stockModel = stockDto.ToStockFromCreateDTO();
+             _context.Stocks.Add(stockModel);
+             _context.SaveChanges();
+             return CreatedAtAction(nameof(GetById), new { id = stockModel.Id}, stockModel.ToStockDto());
         }
     }
 }
